@@ -9,7 +9,6 @@ from dotenv import load_dotenv
 # Constants
 WEATHER_API_URL = "http://api.weatherapi.com/v1/current.json"
 CITY = "Paris"
-API_KEY = os.getenv("API_KEY")
 
 
 def get_weather() -> Dict[str, Any]:
@@ -19,12 +18,13 @@ def get_weather() -> Dict[str, Any]:
     Returns:
         Dict[str, Any]: Weather data
     """
-    if not API_KEY:
+    api_key = os.getenv("API_KEY")
+    if not api_key:
         print("Error: API_KEY environment variable is not set")
         sys.exit(1)
 
     params = {
-        "key": API_KEY,
+        "key": api_key,
         "q": CITY,
         "aqi": "no"
     }
@@ -40,6 +40,7 @@ def get_weather() -> Dict[str, Any]:
 
 def main() -> None:
     """Print current weather information for Paris."""
+    load_dotenv()  # Load environment variables first
     weather_data = get_weather()
 
     current = weather_data["current"]
@@ -53,5 +54,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    load_dotenv()
     main()
